@@ -15,6 +15,9 @@ const App = () => {
       form.reset();
     } else {
       newItem.classList.add('is-danger');
+      setTimeout(() => {
+        newItem.classList.remove('is-danger');
+      }, 100);
     }
   }
 

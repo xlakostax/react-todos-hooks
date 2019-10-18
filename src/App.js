@@ -1,26 +1,63 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import 'bulma/css/bulma.css'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+const App = () => {
+
+  const [list, setList] = useState([]);
+
+  const addItem = (event) => {
+    event.preventDefault();
+    const newItem = document.getElementById('addInput');
+    const form = document.getElementById('addItemForm');
+    console.log(newItem.value)
+    if (newItem.value !== ''){
+      setList([...list, newItem.value]);
+      form.reset();
+    } else {
+      newItem.classList.add('is-danger');
+    }
+  }
+
+  const removeItem = (item) => {
+    // Put our list into an array
+    const newlist = list.slice();
+    console.log(newlist);
+    // Check to see if item passed in matches item in array
+    list.some((element, i) => {
+      if (element === item) {
+        // If item matches, remove it from array
+        newlist.splice(i, 1);
+        console.log(newlist);
+        return true;
+      }
+    });
+    // Set newList to list
+    setList([...newlist]);
+  }
+
+  return(
+    <div className='content'>
+      <div className='container'>
+        <section className='section'>
+          <div>
+            <ul>
+              {list.map((item,key) => (
+                <li key={key}><span className="delete" onClick={() => removeItem(item)}/> {item}</li>
+              ))}
+            </ul>
+          </div>
+        </section>
+        <hr />
+        <form id='addItemForm' className='form'>
+          <input id='addInput' className='input' type='text' placeholder='Text input' />
+          <br />
+          <br />
+          <button className='button is-info' onClick={(event) => addItem(event)}>
+            Add...
+          </button>
+        </form>
+      </div>
     </div>
-  );
+  )
 }
-
 export default App;
